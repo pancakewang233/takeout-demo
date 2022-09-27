@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * @author 83443
+ */
 @Slf4j
 @RestController
 @RequestMapping("/employee")
@@ -21,8 +24,9 @@ public class EmployeeController {
 
     /*
     * 员工登录
-    * @params request
-    * @params employee
+    * @params {request}
+    * @params {employee}
+    * @return {Object}
     * */
     @PostMapping("/login")
     public R<Employee> login(HttpServletRequest request, @RequestBody Employee employee){
@@ -57,7 +61,8 @@ public class EmployeeController {
 
     /*
     * 员工退出
-    * @params request
+    * @params {request}
+    * @return {String}
     * */
     @PostMapping("/logout")
     public R<String> logout(HttpServletRequest request){
@@ -70,11 +75,11 @@ public class EmployeeController {
 
     /*
     * 新增员工
-    * @params employee
-    * @return
+    * @params {employee}
+    * @return {String}
     * */
     @PostMapping("/add")
-    public R<String> save(HttpServletRequest request, @RequestBody Employee employee){
+    public R<String> save(@RequestBody Employee employee){
 
         // 初始密码123456，但是进行md5加密处理
         employee.setPassword(DigestUtils.md5DigestAsHex("123456".getBytes(StandardCharsets.UTF_8)));
@@ -106,15 +111,19 @@ public class EmployeeController {
 
     /*
     * 根据id修改员工信息
+    * @params {employee}
+    * @return {String}
     * */
     @PostMapping("/update")
-    public R<String> update(HttpServletRequest request, @RequestBody Employee employee){
+    public R<String> update(@RequestBody Employee employee){
         employeeService.updateById(employee);
         return R.success("员工信息修改成功");
     }
 
     /*
     * 根据id查员工信息
+    * @params {id}
+    * @return {Object}
     * */
     @GetMapping("/{id}")
     public R<Employee> getById(@PathVariable Long id) {
